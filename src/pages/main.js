@@ -2,10 +2,9 @@ import './_all.scss';
 import './_responsive.scss';
 //*images
 import logo from "../aseets/Hawiah.png"
-import src from "../aseets/sjjsjs.png"
 import src1 from "../aseets/qr.png"
 //**icons */
-import { MdOutlineLocationOn } from "react-icons/md";
+// import { MdOutlineLocationOn } from "react-icons/md";
 import { HiOutlinePhone } from "react-icons/hi";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { CgWebsite } from "react-icons/cg";
@@ -13,64 +12,166 @@ import { AiOutlineWhatsApp } from "react-icons/ai";
 import { FiFacebook } from "react-icons/fi";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { MdGpsFixed } from "react-icons/md";
+import { BiLogoTwitter } from "react-icons/bi";
+import { BiLogoLinkedin } from "react-icons/bi";
+import { FaYoutube } from "react-icons/fa";
+//** firebase */
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { db } from '../firebase/firebase';
 
-export const Main = () => (
-    <div className='cards'>
-        <div className='logo'>
-            <img src={logo} alt="" />
-        </div>
-        <div className='bussniss'>
-            <div className='left d-none d-md-flex'>
-                <img src={src} alt="user" />
-            </div>
-            <div className='right'>
-                <div className='up'>
-                    <div>
-                        <h1>ALEX SMITH</h1>
-                        <div className='left  w-100  d-md-none'>
-                            <img src={src} alt="user" />
-                        </div>
-                        <p>Web developer</p>
-                    </div>
-                    <div className='image'>
-                        <img src={src1} alt="" />
-                    </div>
-                    <div className='right w-100 d-md-none'>
-                        <h4><AiOutlineWhatsApp className='icon' /><span className='text'>Whatsapp.com</span></h4>
-                        <h4><a href=""><FiFacebook className='icon' /><span className='text'>Facebook.com</span></a></h4>
-                        <h4><a href=""><AiOutlineInstagram className='icon' /><span className='text'>Instagram.com</span></a></h4>
-                    </div>
-                </div>
+export const Main = () => {
 
-                <div className='down'>
-                    <div className='info'>
-                        <div className='information'>
-                            <h4 className='d-none d-md-flex'><MdOutlineLocationOn className='icon ' />123 Lorem ipsum dolor. Casablanca ,Morocco</h4>
-                            <h4 className=' d-none gps d-md-flex'> <a href="https://goo.gl/maps/W6To7yc6N8Fp7RKeA"><MdGpsFixed className='icon' /> https://goo.gl/maps/W6To7yc6N8Fp7RKeA </a></h4>
-                            <div className=' gps d-flex  d-md-none'>
-                                <h4><MdOutlineLocationOn className='icon ' /></h4>
-                                <h4>123 Lorem ipsum dolor. Casablanca ,Morocco</h4>
+    // **************** firebase
+    const [Users, setUsers] = useState({});
+    const fetchPost = async () => {
+        const docRef = doc(db, 'users', 'F1clNlBSFoMqykHEGfByvGJZF563', 'info', 'data');
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            setUsers(data);
+        }
+    };
+    useEffect(() => {
+        fetchPost();
+
+    }, [])
+
+    return (
+        <>
+            {
+                Users.country ? (
+                    <>
+                        <div className='cards'>
+                            <div className='logo'>
+                                <img src={logo} alt="" />
                             </div>
-                            <div className='mb-2 gps d-flex  d-md-none'>
-                                <h4 ><MdGpsFixed className='icon' /></h4>
-                                <a href="https://goo.gl/maps/W6To7yc6N8Fp7RKeA"> https://goo.gl/maps/W6To7yc6N8Fp7RKeA </a>
-                            </div>
-                            <div className='icons '>
-                                <div className='me-3'>
-                                    <h4><HiOutlinePhone className='icon' />+123 456 7891</h4>
-                                    <h4><a href=""><MdOutlineAlternateEmail className='icon' />Email.email@gmail.com</a></h4>
-                                    <h4><a href=""><CgWebsite className='icon' />www.website.com</a></h4>
+                            <div className='bussniss'>
+                                <div className='left d-none d-md-flex'>
+                                    <img src={Users.image} alt="user" />
                                 </div>
-                                <div className='right ms-md-3 d-none d-md-block'>
-                                    <h4><AiOutlineWhatsApp className='icon' /><span className='text'>Whatsapp.com</span></h4>
-                                    <h4><a href=""><FiFacebook className='icon' /><span className='text'>Facebook.com</span></a></h4>
-                                    <h4><a href=""><AiOutlineInstagram className='icon' /><span className='text'>Instagram.com</span></a></h4>
+                                <div className='right'>
+                                    <div className='up'>
+                                        <div>
+                                            <h1>{Users.name}</h1>
+                                            <div className='left  w-100  d-md-none'>
+                                                <img src={Users.image} alt="user" />
+                                            </div>
+                                            <p>{Users.work}</p>
+                                        </div>
+                                        <div className='image'>
+                                            {/* ^^ qr  */}
+                                            <img src={src1} alt="" />
+                                        </div>
+                                        <div className='right w-100 d-md-none'>
+                                            <h4><a href={`https://wa.me/${Users.country.phone}${Users.whatsapp}`}><AiOutlineWhatsApp className='icon' /></a></h4>
+                                            {/* facebook */}
+                                            {
+                                                Users.facebook == undefined ?
+                                                    <></>
+                                                    :
+                                                    <h4><a href={`https://${Users.facebook}`}><FiFacebook className='icon' /></a></h4>
+                                            }
+                                            {/* instagram */}
+                                            {
+                                                Users.instagram == undefined ?
+                                                    <></>
+                                                    :
+                                                    <h4><a href={`https://${Users.instagram}`}><AiOutlineInstagram className='icon' /></a></h4>
+                                            }
+                                            {/* twitter */}
+                                            {
+                                                Users.twitter == undefined ?
+                                                    <></>
+                                                    :
+                                                    <h4><a href={`https://${Users.twitter}`}><BiLogoTwitter className='icon' /></a></h4>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div className='down'>
+                                        <div className='info'>
+                                            <div className='information'>
+
+                                                {/* <h4 className='d-none d-md-flex'><MdOutlineLocationOn className='icon ' /> {Users.city}, {Users.country.name} </h4> */}
+                                                <h4 className=' d-none gps d-md-flex'> <a href={Users.gps}><MdGpsFixed className='icon' />{Users.country.name},{Users.city} {Users.address}</a></h4>
+                                                <div className='mb-2 gps d-flex  d-md-none'>
+                                                    <h4 ><MdGpsFixed className='icon' /></h4>
+                                                    <a href={Users.gps}>{Users.country.name},{Users.city} {Users.address} </a>
+                                                </div>
+                                                <div>
+                                                    <h4><a href={`mailto:${Users.email}`}><MdOutlineAlternateEmail className='icon' />{Users.email}</a></h4>
+                                                </div>
+                                                {/* <div className=' gps d-flex  d-md-none'>
+                                                    <h4><MdOutlineLocationOn className='icon ' /></h4>
+                                                    <h4>{Users.city}, {Users.country.name}  </h4>
+                                                </div> */}
+
+
+                                                <div className='icons '>
+                                                    <div className='me-3'>
+                                                        <h4><a href={`tel:${Users.phone}`}><HiOutlinePhone className='icon' />{Users.phone}</a></h4>
+                                                        <h4 className='d-none d-md-block'><a href={`https://wa.me/${Users.country.phone}${Users.whatsapp}`}><AiOutlineWhatsApp className='icon' /><span className='text'>{Users.whatsapp}</span></a></h4>
+                                                        {/* website */}
+                                                        {
+                                                            Users.website == undefined ?
+                                                                <></>
+                                                                :
+                                                                <h4><a href={Users.website}><CgWebsite className='icon' />{Users.website}</a></h4>
+                                                        }
+                                                        {/* youtube */}
+                                                        {
+                                                            Users.youtube == undefined ?
+                                                                <></>
+                                                                :
+                                                                <h4><a href={Users.youtube}><FaYoutube className='icon' />Youtube  </a></h4>
+                                                        }
+                                                    </div>
+                                                    <div className='right ms-md-3 d-none d-md-block'>
+
+                                                        {/* linkdin*/}
+                                                        {
+                                                            Users.linkdin == undefined ?
+                                                                <></>
+                                                                :
+                                                                <h4><a href={`https://${Users.facebook}`}><BiLogoLinkedin className='icon' />{Users.name} </a></h4>
+                                                        }
+
+                                                        {/* facebook */}
+                                                        {
+                                                            Users.facebook == undefined ?
+                                                                <></>
+                                                                :
+                                                                <h4><a href={`https://${Users.facebook}`}><FiFacebook className='icon' />Facebook </a></h4>
+                                                        }
+                                                        {/* instagram */}
+                                                        {
+                                                            Users.instagram == undefined ?
+                                                                <></>
+                                                                :
+                                                                <h4><a href={`https://${Users.instagram}`}><AiOutlineInstagram className='icon' />Instagram</a></h4>
+                                                        }
+                                                        {/* twitter */}
+                                                        {
+                                                            Users.twitter == undefined ?
+                                                                <></>
+                                                                :
+                                                                <h4><a href={`https://${Users.twitter}`}><BiLogoTwitter className='icon' />Twitter </a></h4>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-)
+                    </>
+                ) : (
+                    <p>Loading  code...</p>
+                )
+            }
+        </>
+    )
+}
