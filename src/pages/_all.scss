@@ -1,0 +1,115 @@
+@import "../styles/variable";
+// ** import font
+@font-face {
+  font-family: "poppins";
+  src: url(../aseets/fonts/Poppins-Regular.ttf);
+}
+
+// **body
+.cards {
+  font-family: "poppins";
+  height: 100vh;
+  color: #353c43;
+  .logo{
+    margin: 2rem 0  0 2rem;
+    img{
+      width: 8rem;
+    }
+  }
+  //**card bussniss
+  .bussniss {
+    background-color: rgb(249, 249, 249);
+
+    margin:5rem auto ;
+    align-content: center;
+    box-shadow: 0px 8px 24px 0px rgba(140, 149, 159, 0.2);
+    width: 65vw;
+    height: 24rem;
+    border-radius: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // **left side (image)
+    .left {
+      width: 25%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 7.5rem;
+        border-radius: 20rem;
+        margin: 2.5rem 0;
+      }
+    }
+    // **Right side info
+    .right {
+      width: 75%;
+      // *up
+      .up {
+        width: 90%;
+        margin: 2.5rem 1rem 0;
+        padding-bottom: 0.2rem;
+        border-bottom: 2px solid $red;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        h1 {
+          font-weight: bold;
+        }
+        p {
+          color: $red;
+          font-weight: 500;
+          font-size: 14px;
+        }
+        .image {
+          display: flex;
+          align-items: flex-end;
+          img {
+            width: 4rem;
+            height: 4rem;
+          }
+        }
+      }
+      // **down
+      .down {
+        padding: 2rem 3.2rem 2rem 1rem;
+        .info {
+          .information {
+            h4 {
+              font-size: 15px;
+              font-weight: 400;
+              a {
+                text-decoration: none;
+                color: #353c43;
+              }
+              .icon {
+                background-color: $red;
+                margin: 0 1rem 0 0;
+                color: white;
+                padding: 0.2rem;
+                font-size: 20px;
+                border-radius: 5px;
+              }
+            }
+          }
+          .icons {
+            display: flex;
+            flex-wrap: nowrap;
+            margin: 2rem 0;
+            div {
+              width: 60%;
+              h4 {
+                font-size: 14px;
+                font-weight: 400;
+                a {
+                  text-decoration: none;
+                  color: #353c43;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
